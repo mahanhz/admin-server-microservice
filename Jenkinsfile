@@ -5,7 +5,7 @@ FALLBACK_RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 DAYS_TO_KEEP_BUILDS = "1"
 NUMBER_OF_BUILDS_TO_KEEP = "10"
-REPOSITORY_URL="git@github.com:mahanhz/activities-config-microservice.git"
+REPOSITORY_URL="git@github.com:mahanhz/admin-server-microservice.git"
 
 properties([[$class: 'BuildDiscarderProperty', strategy:
             [$class: 'LogRotator', artifactDaysToKeepStr: '',
@@ -38,7 +38,7 @@ if (!isMasterBranch()) {
     node {
         unstash 'source'
         sh 'chmod 755 gradlew'
-        sh './gradlew integrationTest'
+        sh 'SPRING_CLOUD_CONFIG_URI=http://192.168.1.33:13301 ./gradlew integrationTest'
     }
 
     stage name: 'Merge', concurrency: 1
@@ -89,7 +89,7 @@ if (isMasterBranch()) {
         unstash 'source'
         unstash 'masterProperties'
 
-        def script = "scripts/release/activities_config_release.sh"
+        def script = "scripts/release/admin_server_release.sh"
         sh "chmod 755 " + script
         sh 'chmod 755 gradlew'
 
