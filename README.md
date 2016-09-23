@@ -1,6 +1,7 @@
 # admin-server-microservice
 
 This uses [spring-boot-admin](https://github.com/codecentric/spring-boot-admin) to monitor Spring Boot applications.
+
 It is an opt in approach so any Spring Boot app that wants to be monitored must do the following:
 
 * Add the spring-boot-admin-starter-client dependency
