@@ -5,6 +5,7 @@ buildscript {
 		springBootVersion = '1.4.1.RELEASE'
 		sshVersion = '2.2.0'
 		gradleReleaseVersion = '2.4.0'
+		gradleGitPropertiesVersion = '1.4.17'
 
 		logbackVersion = '1.1.6'
 		logstashLogbackVersion = '4.7'
@@ -26,6 +27,7 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("org.hidetake:gradle-ssh-plugin:${sshVersion}")
 		classpath("net.researchgate:gradle-release:${gradleReleaseVersion}")
+		classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:${gradleGitPropertiesVersion}")
 	}
 }
 
@@ -34,6 +36,7 @@ apply plugin: 'maven'
 apply plugin: 'spring-boot'
 apply plugin: 'org.hidetake.ssh'
 apply plugin: 'net.researchgate.release'
+apply plugin: 'com.gorylenko.gradle-git-properties'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -43,23 +46,22 @@ repositories {
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-actuator-docs')
-	compile('org.springframework.boot:spring-boot-starter-aop')
-	compile('org.springframework.boot:spring-boot-starter-hateoas')
-	compile('org.springframework.boot:spring-boot-starter-web')
+	compile ('org.springframework.boot:spring-boot-starter-actuator')
+	compile ('org.springframework.boot:spring-boot-actuator-docs')
+	compile ('org.springframework.boot:spring-boot-starter-aop')
+	compile ('org.springframework.boot:spring-boot-starter-hateoas')
+	compile ('org.springframework.boot:spring-boot-starter-web')
 
-	compile('org.springframework.cloud:spring-cloud-starter-config')
-	compile('org.springframework.cloud:spring-cloud-starter-eureka')
+	compile ('org.springframework.cloud:spring-cloud-starter-config')
 
-	compile('org.springframework.retry:spring-retry')
+	compile ('org.springframework.retry:spring-retry')
 
-    compile("de.codecentric:spring-boot-admin-server:${springBootAdminVersion}")
-    compile("de.codecentric:spring-boot-admin-server-ui:${springBootAdminVersion}")
-	compile("de.codecentric:spring-boot-admin-server-ui-hystrix:${springBootAdminVersion}")
-	compile("de.codecentric:spring-boot-admin-server-ui-activiti:${springBootAdminVersion}")
-	compile("de.codecentric:spring-boot-admin-starter-client:${springBootAdminClientVersion}")
-	compile("org.jolokia:jolokia-core:${jolokiaVersion}")
+    compile ("de.codecentric:spring-boot-admin-server:${springBootAdminVersion}")
+    compile ("de.codecentric:spring-boot-admin-server-ui:${springBootAdminVersion}")
+	compile ("de.codecentric:spring-boot-admin-server-ui-hystrix:${springBootAdminVersion}")
+	compile ("de.codecentric:spring-boot-admin-server-ui-activiti:${springBootAdminVersion}")
+	compile ("de.codecentric:spring-boot-admin-starter-client:${springBootAdminClientVersion}")
+	compile ("org.jolokia:jolokia-core:${jolokiaVersion}")
 
     compile ("ch.qos.logback:logback-classic:${logbackVersion}")
 	compile ("ch.qos.logback:logback-core:${logbackVersion}")
@@ -88,6 +90,12 @@ apply from: 'publish.gradle'
 
 // Deploy
 apply from: 'deploy.gradle'
+
+// Git properties that display in the actuator /info endpoint
+gitProperties {
+	dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ z"
+	dateFormatTimeZone = "UTC"
+}
 
 // Create a fully executable jar
 springBoot {
