@@ -3,7 +3,9 @@ spring:
     name: admin-server-microservice
   cloud:
     config:
-      enabled: true
+      discovery:
+        enabled: true
+        serviceId: activities-config-microservice
       failFast: true
       retry:
         initialInterval: 5000
