@@ -17,7 +17,7 @@
         <then>
             <property name="logLevel" value="INFO"/>
             <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-                <destination>192.168.1.35:4562</destination>
+                <destination>192.168.1.35:4563</destination>
                 <encoder class="net.logstash.logback.encoder.LogstashEncoder">
                     <timeZone>UTC</timeZone>
                 </encoder>
