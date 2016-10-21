@@ -8,6 +8,7 @@ test {
 
 task integrationTest(type:Test) {
     include integrationTests
+    systemProperties['spring.profiles.active'] = 'online,test'
 }
 
 task smokeTest(type:Test) {

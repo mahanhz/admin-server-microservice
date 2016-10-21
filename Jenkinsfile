@@ -18,7 +18,7 @@ stage 'Build'
 node {
     checkout scm
 
-    sh './gradlew clean build'
+    gradle 'clean test assemble'
 
     stash excludes: 'build/', includes: '**', name: 'source'
 
@@ -38,7 +38,7 @@ if (!isMasterBranch()) {
     node {
         unstash 'source'
         sh 'chmod 755 gradlew'
-        sh 'SPRING_PROFILES_ACTIVE=test ./gradlew integrationTest'
+        gradle 'integrationTest'
     }
 
     stage name: 'Merge', concurrency: 1
@@ -60,7 +60,7 @@ if (isMasterBranch()) {
     node {
         unstash 'source'
         sh 'chmod 755 gradlew'
-        sh './gradlew build uploadArchives -x test'
+        gradle 'assemble uploadArchives'
     }
 
     stage 'Approve RC?'
@@ -110,4 +110,17 @@ def releaseVersion() {
 
 def isMasterBranch() {
     return env.BRANCH_NAME == "master"
+}
+
+void gradle(String tasks, String switches = null) {
+    String gradleCommand = "";
+    gradleCommand += './gradlew '
+    gradleCommand += tasks
+
+    if(switches != null) {
+        gradleCommand += ' '
+        gradleCommand += switches
+    }
+
+    sh gradleCommand.toString()
 }
